@@ -5,6 +5,7 @@ var myUniqueid;
 var api; // `api` should only be set if we're in a host-specific screen. on the initial screen it should always be null.
 var isInGame = false; // flag indicating whether the game stream started
 var windowState = 'normal'; // chrome's windowState, possible values: 'normal' or 'fullscreen'
+var currentStreamingResolution = { width: 1280, height: 720 }
 
 // Called by the common.js module.
 function attachListeners() {
@@ -63,6 +64,23 @@ function onBoundsChanged() {
     storeData('windowState', 'normal', null);
     windowState = 'normal';
   }
+}
+
+/**
+ * changeStreamingResolution - Changes the streaming resolution
+ *
+ * @param  {Number} width  The width of the stream
+ * @param  {Number} height The height of the stream
+ * @return {Object}        The resolution object
+ */
+function changeStreamingResolution(width = 1280, height = 720) {
+  // First, get the resolution object
+  var resolution = { width, height } // TODO: Type-checking
+  // Second, save to storage
+  window.currentStreamingResolution = resolution // DEBUG: This is meant for debugging
+  storeData('_resolution', resolution)
+  // Third, return resolution object
+  return resolution
 }
 
 function changeUiModeForNaClLoad() {
